@@ -1,24 +1,26 @@
 const rp = require('request-promise');
-const cheerio = require('cheerio');
+const $ = require('cheerio');
 
-const baseUrl = `https://www.churchofjesuschrist.org/study/scriptures/nt/${book}/${chapter}?lang=eng`;
-const options = {
-  uri: baseUrl,
-  transform: function (body) {
-    return cheerio.load(body);
-  }
+const player = {
+  firstName: 'Dirk',
+  lastName: 'Nowitzki'
 };
 
-// Get one scripture and count words
-rp(options)
-  .then(function($){
-    let scriptureText = '';
-    for (let i = versesStart; i <= versesEnd; i++) {
-      scriptureText += $(`#p${i}.verse`).text().split(' ').slice(1).join(' ') + ' ';
-    }
-    const wordCount = scriptureText.split(' ').length;
-    const characterCount = scriptureText.split('').length;
-    console.log(`${scripture}: ${wordCount} words, ${characterCount} characters`);
+const baseUrl = `https://herosports.com/nba/player/${player.firstName.toLowerCase()}-${player.lastName.toLowerCase()}-stats`;
+
+// Build array of objects with year and points for each entry
+// Map array to objects with year and total points for each entry
+// Convert array to CSV
+
+rp(baseUrl)
+  .then(function(html){
+    const statHeaders = [];
+
+    $('#table3 thead tr acronym', html).each(function(i, elem) {
+      statHeaders[i] = $(this).text().trim();
+    });
+
+    // $('#table3 tbody tr', html).each();
   })
   .catch(function(err){
     //handle error
