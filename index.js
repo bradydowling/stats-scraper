@@ -20,7 +20,18 @@ rp(baseUrl)
       statHeaders[i] = $(this).text().trim();
     });
 
-    // $('#table3 tbody tr', html).each();
+    const yearlyStats = [];
+    $('#table3 tbody tr', html).each(function(i, elem) {
+      const thisYear = {};
+      const tableData = $(this).find('td');
+      tableData.each(function(index, item) {
+        const key = statHeaders[index];
+        thisYear[key] = $(this).text();
+      });
+      thisYear.index = i;
+      yearlyStats.push(thisYear);
+    });
+    console.log(yearlyStats);
   })
   .catch(function(err){
     //handle error
