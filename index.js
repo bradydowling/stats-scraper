@@ -17,7 +17,7 @@ rp(baseUrl)
     const statHeaders = [];
 
     $('#table3 thead tr acronym', html).each(function(i, elem) {
-      statHeaders[i] = $(this).text().trim();
+      statHeaders[i] = $(this).attr('title').trim();
     });
 
     const yearlyStats = [];
