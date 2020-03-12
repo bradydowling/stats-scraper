@@ -2,7 +2,7 @@ const leadingScorers = require('./leadingScorers');
 const rp = require('request-promise');
 const $ = require('cheerio');
 
-// TODO: Change to use NBA API
+// TODO: Change to use https://www.landofbasketball.com/nba_players_stats/b/${firstName}_${lastName}_tot.htm
 
 // Build array of objects with year and points for each entry
 // Map array to objects with year and total points for each entry
@@ -30,7 +30,7 @@ async function getCareerStats({ firstName, lastName }) {
       thisYear.index = i;
       yearlyStats.push(thisYear);
     });
-    console.log(`${lastName} played ${yearlyStats.length} seasons`);
+    return yearlyStats;
   })
   .catch(function(err){
     //handle error
@@ -40,7 +40,8 @@ async function getCareerStats({ firstName, lastName }) {
 async function getPlayersStats(players) {
   for (let i = 0; i < players.length; i++) {
     const { firstName, lastName } = players[i];
-    await getCareerStats({ firstName, lastName });
+    const careerStats = await getCareerStats({firstName, lastName });
+    console.log({ fullName: `${firstName} ${lastName}`, ...careerStats });
   }
 }
 
