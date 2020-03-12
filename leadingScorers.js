@@ -1,4 +1,4 @@
-export const leadingScorers = [
+module.exports = [
   "Kareem Abdul-Jabbar",
   "Karl Malone",
   "LeBron James",

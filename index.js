@@ -1,18 +1,17 @@
+const leadingScorers = require('./leadingScorers');
 const rp = require('request-promise');
 const $ = require('cheerio');
 
-const player = {
-  firstName: 'Dirk',
-  lastName: 'Nowitzki'
-};
-
-const baseUrl = `https://herosports.com/nba/player/${player.firstName.toLowerCase()}-${player.lastName.toLowerCase()}-stats`;
+// TODO: Change to use NBA API
 
 // Build array of objects with year and points for each entry
 // Map array to objects with year and total points for each entry
 // Convert array to CSV
 
-rp(baseUrl)
+async function getCareerStats({ firstName, lastName }) {
+  const baseUrl = `https://herosports.com/nba/player/${firstName.toLowerCase()}-${lastName.toLowerCase()}-stats`;
+
+  rp(baseUrl)
   .then(function(html){
     const statHeaders = [];
 
@@ -31,8 +30,23 @@ rp(baseUrl)
       thisYear.index = i;
       yearlyStats.push(thisYear);
     });
-    console.log(yearlyStats);
+    console.log(`${lastName} played ${yearlyStats.length} seasons`);
   })
   .catch(function(err){
     //handle error
   });
+}
+
+async function getPlayersStats(players) {
+  for (let i = 0; i < players.length; i++) {
+    const { firstName, lastName } = players[i];
+    await getCareerStats({ firstName, lastName });
+  }
+}
+
+const allPlayers = leadingScorers.map(player => {
+  const [firstName, lastName] = player.split(' ');
+  return { firstName, lastName };
+});
+
+getPlayersStats(allPlayers);
