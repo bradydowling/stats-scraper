@@ -24,12 +24,18 @@ To get an array of the top 50 all-time NBA scorers:
 
 To get an array stat categories from the table header:
 ```
-const statHeaders = [...document.querySelectorAll('#totals thead th')].map(item => item.dataset.stat)
+const statHeaders = [...document.querySelectorAll('#totals thead th')].map(item => item.dataset.stat);
 ```
 
 To get an array of a player's stats by seasons:
 
-TODO:
 ```
-[...document.querySelectorAll('#totals tbody tr')].map(item => item.querySelector('td:nth-of-type(2) a').innerText)
+const careerStats = [...document.querySelectorAll('#totals tbody tr')].map(row => {
+  const statCells = [...row.querySelectorAll('td, th')];
+  return statCells.reduce((seasonStats, statCell, i) => {
+    const key = statHeaders[i];
+    seasonStats[key] = statCell.innerText;
+    return seasonStats;
+  }, {});
+});
 ```
