@@ -13,11 +13,11 @@ To get an array of the top 50 all-time NBA scorers:
 [...document.querySelectorAll('.wikitable.sortable.jquery-tablesorter tbody tr')].map(item => item.querySelector('td:nth-of-type(2) a').innerText)
 ```
 
-**Note:** This could eventually be turned into a Cheerio script.
+**Note:** This could eventually be turned into a Cheerio or puppeteer script.
 
 # Player Career Stats
 
-**Note:** Until this is turned into a Cheerio script, you'll need to do this for all 50 players on the leading scorers list.
+**Note:** Until this is turned into a Cheerio or puppeteer script, you'll need to do this for all 50 players on the leading scorers list.
 
 1. Open up the stats page pertain to your player of choice at `https://www.basketball-reference.com/players/${lastName.toLowerCase().slice(0, 1)}/${lastName.toLowerCase().slice(0, 5)}${firstName.toLowerCase().slice(0, 2)}01.html`
 1. Open your browser console
@@ -36,6 +36,16 @@ const careerStats = [...document.querySelectorAll('#totals tbody tr')].map(row =
     const key = statHeaders[i];
     seasonStats[key] = statCell.innerText;
     return seasonStats;
+  }, {});
+});
+```
+
+Or all in one fell swoop:
+
+```
+[...document.querySelectorAll('#totals tbody tr')].map(row => {
+  return [...row.querySelectorAll('td, th')].reduce((acc, item, i) => {
+    return { ...acc, [[...document.querySelectorAll('#totals thead th')].map(item => item.dataset.stat)[i]]: item.innerText };
   }, {});
 });
 ```
