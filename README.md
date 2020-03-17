@@ -13,6 +13,16 @@ To get an array of the top 50 all-time NBA scorers:
 [...document.querySelectorAll('.wikitable.sortable.jquery-tablesorter tbody tr')].map(item => item.querySelector('td:nth-of-type(2) a').innerText)
 ```
 
+To open up tabs for each player's stats, you can use the following:
+```
+const leaders = [...document.querySelectorAll('.wikitable.sortable.jquery-tablesorter tbody tr')].map(item => item.querySelector('td:nth-of-type(2) a').innerText);
+for (let i = 0; i < 10; i++) { // I'd start with increments of 10 so my browser doesn't die
+  const [firstName, lastName] = leaders[i].split(' ');
+  const url = `https://www.basketball-reference.com/players/${lastName.toLowerCase().slice(0, 1)}/${lastName.toLowerCase().slice(0, 5)}${firstName.toLowerCase().slice(0, 2)}01.html`;
+  window.open(url,'_blank');
+}
+```
+
 **Note:** This could eventually be turned into a Cheerio or puppeteer script.
 
 # Player Career Stats
