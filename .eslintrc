@@ -1,6 +1,7 @@
 {
   "extends": [
-    "prettier"
+    "prettier",
+    "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 2017,
@@ -10,14 +11,14 @@
       "es6": true,
       "node": true
   },
-    "rules": {
-        "semi": ["error", "always"],
-        "quotes": ["error", "single"],
-        "prefer-arrow-callback": "error",
-        "prefer-const": "error",
-        "prefer-template": "error"
-    },
-    "plugins": [
-      "prettier"
-    ]
+  "rules": {
+      "semi": ["error", "always"],
+      "quotes": ["error", "single"],
+      "prefer-arrow-callback": "error",
+      "prefer-const": "error",
+      "prefer-template": "error"
+  },
+  "plugins": [
+    "prettier"
+  ]
 }
