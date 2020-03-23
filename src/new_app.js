@@ -1,4 +1,5 @@
 import * as d3 from '../web_modules/d3.js';
+import * as d3Array from '../web_modules/d3-array.js';
 
 const margin = { top: 16, right: 6, bottom: 6, left: 0 };
 const barSize = 48;
@@ -16,7 +17,6 @@ const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right]);
 const duration = 250;
 
 async function chart() {
-  // replay; // I don't know what this does
   const data = await d3.csv('./data/category-brands.csv');
 
   const color = () => {
@@ -36,7 +36,7 @@ async function chart() {
   // TODO: This returns nothing
   // TODO: Because it's using the wrong d3.rollup, should be from d3-array
   const datevalues = Array.from(
-    d3.nest().rollup(
+    d3Array.rollup(
       data,
       ([d]) => d.value,
       d => +d.date,
