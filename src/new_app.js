@@ -33,8 +33,11 @@ async function chart() {
 
   const names = new Set(data.map(d => d.name));
 
-  // TODO: This returns nothing
-  // TODO: Because it's using the wrong d3.rollup, should be from d3-array
+  /**
+   * TODO: This doesn't return what it should, see the following:
+   * https://observablehq.com/@d3/bar-chart-race-explained
+   * https://observablehq.com/@d3/d3-group
+   */
   const datevalues = Array.from(
     d3Array.rollup(
       data,
