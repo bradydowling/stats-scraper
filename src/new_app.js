@@ -34,6 +34,7 @@ async function chart() {
   const names = new Set(data.map(d => d.name));
 
   // TODO: This returns nothing
+  // TODO: Because it's using the wrong d3.rollup, should be from d3-array
   const datevalues = Array.from(
     d3.nest().rollup(
       data,
