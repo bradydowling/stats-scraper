@@ -5,7 +5,7 @@ const margin = { top: 16, right: 6, bottom: 6, left: 0 };
 const barSize = 48;
 const n = 12;
 const height = margin.top + barSize * n + margin.bottom;
-const width = 2000;
+const width = 2000; // Height scales inversely proportional to this number, it could be renamed or else functionality with it can be changed for it to actually be width
 
 const y = d3
   .scaleBand()
@@ -19,7 +19,8 @@ const duration = 250;
 async function chart() {
   const data = await d3.csv('./data/category-brands.csv', d3.autoType);
 
-  const color = () => {
+  // TODO: Get the colors working as they should
+  const color = d => {
     const scale = d3.scaleOrdinal(d3.schemeTableau10);
     if (data.some(d => d.category !== undefined)) {
       const categoryByName = new Map(data.map(d => [d.name, d.category]));
