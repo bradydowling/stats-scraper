@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default [
   'Kareem Abdul-Jabbar',
   'Karl Malone',
@@ -6,7 +7,7 @@ export default [
   'Michael Jordan',
   'Dirk Nowitzki',
   'Wilt Chamberlain',
-  'Shaquille O\'Neal',
+  "Shaquille O'Neal",
   'Moses Malone',
   'Elvin Hayes',
   'Hakeem Olajuwon',
@@ -50,3 +51,4 @@ export default [
   'LaMarcus Aldridge',
   'Clifford Robinson',
 ];
+/* eslint-enable */
