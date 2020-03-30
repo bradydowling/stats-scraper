@@ -59,3 +59,11 @@ Or all in one fell swoop:
   }, {});
 });
 ```
+
+# Team Colors 
+
+Go to `https://teamcolorcodes.com/nba-team-color-codes/` and then run the following script:
+
+```
+[...document.querySelectorAll('.team-button')].map(el => { return {team: el.innerText, color: el.style['background-color']}})
+```

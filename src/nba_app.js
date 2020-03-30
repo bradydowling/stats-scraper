@@ -28,7 +28,7 @@ async function chart() {
     return d => scale(d.name);
   };
 
-  const k = 10;
+  const barsNum = 10;
 
   const names = new Set(
     data.map((d, i) => {
@@ -62,8 +62,8 @@ async function chart() {
     const [[ka, a], [kb, b]] = pairs;
     kb1 = kb;
     b1 = b;
-    for (let i = 0; i < k; ++i) {
-      const t = i / k;
+    for (let i = 0; i < barsNum; ++i) {
+      const t = i / barsNum;
       keyframes.push([
         new Date(ka * (1 - t) + kb * t),
         rank(name => (a.get(name) || 0) * (1 - t) + (b.get(name) || 0) * t),
