@@ -30,7 +30,12 @@ async function chart() {
 
   const k = 10;
 
-  const names = new Set(data.map(d => d.name));
+  const names = new Set(
+    data.map((d, i) => {
+      i;
+      return d.name;
+    })
+  );
 
   const datevalues = Array.from(
     d3Array.rollup(
