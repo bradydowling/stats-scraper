@@ -2,6 +2,15 @@
 
 Should scrape stats from Wikipedia or another related stat source and store them as a CSV, likely to be used for dataviz projects with D3.js
 
+# Getting started
+
+```
+# install needed Node modules
+npm install
+# Bundle Node modules for in-browser usage
+npx snowpack
+```
+
 # Players List
 
 To get an array of the top 50 all-time NBA scorers:

@@ -1,6 +1,7 @@
 import * as d3 from '../web_modules/d3.js';
 import * as d3Array from '../web_modules/d3-array.js';
 import { ALL_STATS as data } from './../data/scoringData.js';
+import teamColors from '../data/teamColors.js';
 
 const margin = { top: 16, right: 6, bottom: 6, left: 0 };
 const barSize = 48;
@@ -18,24 +19,40 @@ const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right]);
 const duration = 250;
 
 async function chart() {
-  const color = d => {
-    const scale = d3.scaleOrdinal(d3.schemeTableau10);
-    if (data.some(d => d.teamName !== undefined)) {
-      const categoryByName = new Map(data.map(d => [d.name, d.teamName]));
-      scale.domain(Array.from(categoryByName.values()));
-      return d => scale(categoryByName.get(d.name));
-    }
-    return d => scale(d.name);
-  };
-
   const barsNum = 10;
 
   const names = new Set(
     data.map((d, i) => {
-      i;
       return d.name;
     })
   );
+
+  const teamColorMap = teamColors.reduce((colors, { team: name, color }) => {
+    const teamAbbr = name.toUpperCase().slice(0, 3);
+    colors[teamAbbr] = color;
+    return colors;
+  }, {});
+
+  const playerTeamMap = data.reduce((currentMap, player) => {
+    if (!player.teamName) {
+      return currentMap;
+    }
+    if (currentMap[player.name]) {
+      currentMap[player.name].push(player.teamName);
+      return currentMap;
+    }
+    currentMap[player.name] = [player.teamName];
+    return currentMap;
+  }, {});
+
+  const color = ({ name: playerName }) => {
+    const playersTeams = playerTeamMap[playerName];
+    const teamWithColor = playersTeams.find(team => {
+      return teamColorMap[team];
+    });
+    const teamColor = teamColorMap[teamWithColor];
+    return teamColor || d3.interpolateSinebow(Math.random());
+  };
 
   const datevalues = Array.from(
     d3Array.rollup(
