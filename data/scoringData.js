@@ -10,14 +10,41 @@ const getReadableName = nameString => {
 };
 const getTeamName = teamString => teamString;
 
+const isPartialSeason = (i, statsArray, thisYear) => {
+  if (i === 0) {
+    return false;
+  }
+  const prevStatline = statsArray[i - 1];
+  if (
+    prevStatline.teamName === 'TOT' &&
+    thisYear.date.getTime() === prevStatline.date.getTime()
+  ) {
+    return true;
+  }
+  if (i === 1) {
+    return false;
+  }
+  const twoStatlinesAgo = statsArray[i - 2];
+  if (
+    twoStatlinesAgo.teamName === 'TOT' &&
+    thisYear.date.getTime() === twoStatlinesAgo.date.getTime()
+  ) {
+    return true;
+  }
+  return false;
+};
+
 const statsByPlayer = Object.keys(stats).map((playerName, i) => {
   let playerPoints = 0;
-  const yearlyStats = stats[playerName].map(yearStats => {
-    playerPoints += +yearStats.pts;
+  const yearlyStats = stats[playerName].map((yearStats, i, statsArray) => {
+    const teamName = getTeamName(yearStats.team_id);
+    if (teamName !== 'TOT' && !isPartialSeason(i, statsArray, yearStats)) {
+      playerPoints += +yearStats.pts;
+    }
     return {
       date: getYearDate(yearStats.season),
       name: getReadableName(playerName),
-      teamName: getTeamName(yearStats.team_id),
+      teamName,
       value: playerPoints,
     };
   });
@@ -27,7 +54,7 @@ const statsByPlayer = Object.keys(stats).map((playerName, i) => {
 
   return yearlyStats
     .filter(year => {
-      return !partialYears.includes(year.date) || year.date === 'TOT';
+      return !partialYears.includes(year.date) || year.teamName === 'TOT';
     })
     .map((yearStats, i) => {
       return Object.assign({ seasonNum: i }, yearStats);

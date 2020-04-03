@@ -1,7 +1,7 @@
 import * as d3 from '../web_modules/d3.js';
 import * as d3Array from '../web_modules/d3-array.js';
 import { ALL_STATS as data } from './../data/scoringData.js';
-import teamColors from '../data/teamColors.js';
+import teamColorMap from '../data/teamColors.js';
 
 const margin = { top: 16, right: 6, bottom: 6, left: 0 };
 const barSize = 48;
@@ -26,12 +26,6 @@ async function chart() {
       return d.name;
     })
   );
-
-  const teamColorMap = teamColors.reduce((colors, { team: name, color }) => {
-    const teamAbbr = name.toUpperCase().slice(0, 3);
-    colors[teamAbbr] = color;
-    return colors;
-  }, {});
 
   const playerTeamMap = data.reduce((currentMap, player) => {
     if (!player.teamName) {

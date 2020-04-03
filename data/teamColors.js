@@ -125,4 +125,10 @@ const teamColors = [
   },
 ];
 
-export default teamColors;
+const teamColorMap = teamColors.reduce((colors, { team: name, color }) => {
+  const teamAbbr = name.toUpperCase().slice(0, 3);
+  colors[teamAbbr] = color;
+  return colors;
+}, {});
+
+export default teamColorMap;
