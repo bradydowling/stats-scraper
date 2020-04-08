@@ -5,14 +5,14 @@ import teamColorMap from '../data/teamColors.js';
 
 const margin = { top: 16, right: 6, bottom: 6, left: 0 };
 const barSize = 48;
-const n = 12;
-const height = margin.top + barSize * n + margin.bottom;
-const width = 2000; // Height scales inversely proportional to this number, it could be renamed or else functionality with it can be changed for it to actually be width
+const visibleBarsNum = 25;
+const height = margin.top + barSize * visibleBarsNum + margin.bottom;
+const width = 2200; // Height scales inversely proportional to this number, it could be renamed or else functionality with it can be changed for it to actually be width
 
 const y = d3
   .scaleBand()
-  .domain(d3.range(n + 1))
-  .rangeRound([margin.top, margin.top + barSize * (n + 1 + 0.1)])
+  .domain(d3.range(visibleBarsNum + 1))
+  .rangeRound([margin.top, margin.top + barSize * (visibleBarsNum + 1 + 0.1)])
   .padding(0.1);
 const x = d3.scaleLinear([0, 1], [margin.left, width - margin.right]);
 
@@ -62,7 +62,8 @@ async function chart() {
   const rank = value => {
     const data = Array.from(names, name => ({ name, value: value(name) }));
     data.sort((a, b) => d3.descending(a.value, b.value));
-    for (let i = 0; i < data.length; ++i) data[i].rank = Math.min(n, i);
+    for (let i = 0; i < data.length; ++i)
+      data[i].rank = Math.min(visibleBarsNum, i);
     return data;
   };
 
@@ -100,7 +101,7 @@ async function chart() {
 
     return ([date, data], transition) =>
       (bar = bar
-        .data(data.slice(0, n), d => d.name)
+        .data(data.slice(0, visibleBarsNum), d => d.name)
         .join(
           enter =>
             enter
@@ -133,7 +134,7 @@ async function chart() {
       .axisTop(x)
       .ticks(width / 160)
       .tickSizeOuter(0)
-      .tickSizeInner(-barSize * (n + y.padding()));
+      .tickSizeInner(-barSize * (visibleBarsNum + y.padding()));
 
     return (_, transition) => {
       g.transition(transition).call(axis);
@@ -155,14 +156,17 @@ async function chart() {
   const labels = svg => {
     let label = svg
       .append('g')
-      .style('font', 'bold 12px var(--sans-serif)')
       .style('font-variant-numeric', 'tabular-nums')
+      .attr('font-family', 'Sans Serif')
+      .attr('font-size', '16px')
+      .attr('font-weight', 'bold')
+      .attr('color', 'white')
       .attr('text-anchor', 'end')
       .selectAll('text');
 
     return ([date, data], transition) =>
       (label = label
-        .data(data.slice(0, n), d => d.name)
+        .data(data.slice(0, visibleBarsNum), d => d.name)
         .join(
           enter =>
             enter
@@ -225,11 +229,13 @@ async function chart() {
   const ticker = svg => {
     const now = svg
       .append('text')
-      .style('font', `bold ${barSize}px var(--sans-serif)`)
-      .style('font-variant-numeric', 'tabular-nums')
+      .attr('font-family', 'sans-serif')
+      .attr('font-weight', 'bold')
+      .attr('font-size', `${1.5 * barSize}`)
+      .attr('class', 'yearLabel')
       .attr('text-anchor', 'end')
       .attr('x', width - 6)
-      .attr('y', margin.top + barSize * (n - 0.45))
+      .attr('y', margin.top - barSize + barSize * (visibleBarsNum - 0.45))
       .attr('dy', '0.32em')
       .text(formatDate(keyframes[0][0]));
 

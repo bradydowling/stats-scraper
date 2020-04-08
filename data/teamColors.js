@@ -126,9 +126,30 @@ const teamColors = [
 ];
 
 const teamColorMap = teamColors.reduce((colors, { team: name, color }) => {
-  const teamAbbr = name.toUpperCase().slice(0, 3);
+  let teamAbbr;
+  if (name === 'Brooklyn Nets') {
+    teamAbbr = 'BKN';
+  } else if (name === 'Golden State Warriors') {
+    teamAbbr = 'GSW';
+  } else if (name === 'Los Angeles Clippers') {
+    teamAbbr = 'LAC';
+  } else if (name === 'Los Angeles Lakers') {
+    teamAbbr = 'LAL';
+  } else if (name === 'New Orleans Pelicans') {
+    teamAbbr = 'NOP';
+  } else if (name === 'New York Knicks') {
+    teamAbbr = 'NYK';
+  } else if (name === 'Oklahoma City Thunder') {
+    teamAbbr = 'OKC';
+  } else if (name === 'San Antonio Spurs') {
+    teamAbbr = 'SAS';
+  } else {
+    teamAbbr = name.toUpperCase().slice(0, 3);
+  }
   colors[teamAbbr] = color;
   return colors;
 }, {});
+
+teamColorMap['STL'] = 'rgb(224, 58, 62)';
 
 export default teamColorMap;

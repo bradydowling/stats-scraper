@@ -1,6 +1,10 @@
 import stats from './stats/index.js';
 
-const getYearDate = yearString => new Date(yearString.split('-')[0]);
+const getYearDate = yearString => {
+  const startYear = yearString.split('-')[0];
+  const endYear = `${parseInt(startYear) + 1}`;
+  return new Date(endYear);
+};
 const getReadableName = nameString => {
   return nameString
     .toLowerCase()
